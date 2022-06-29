@@ -1,0 +1,5 @@
+C:\Users\craig\weatherApp>venv\Scripts\activate.bat
+
+(venv) C:\Users\craig\weatherApp>set FLASK_APP=app.py
+
+(venv) C:\Users\craig\weatherApp>flask run

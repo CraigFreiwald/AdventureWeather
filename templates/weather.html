@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!-- created by Craig Freiwald using Bulma css framework -->
+<!-- the stylesheet documentation can be accessed here https://bulma.io/documentation -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Adventure Weather</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"/>
+</head>
+<body>
+<section class="hero is-info">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+               <strong>Adventure Weather</strong>
+            </h1>
+        </div>
+    </div>
+</section>
+<br>
+<br>
+<br>
+<br>
+<!-- Main container -->
+<nav class="level">
+    <div class="level-item has-text-centered">
+        <!-- Left side -->
+        <div class="level-item">
+            <button class="button is-info">
+                Previous City
+            </button>
+        </div>
+    </div>
+    <!-- Center -->
+    <!-- widget obtained from https://openweathermap.org/widgets-constructor-->
+    <div class="level-item has-text-centered">
+        <div class="columns">
+            <div class="column">
+            <div class="content">
+                    <div class="widget">
+                        {% for userLoc in usersList %}
+                        <div id="openweathermap-widget-11"></div>
+                        <script src='//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/d3.min.js'></script>
+                        <script>window.myWidgetParam ? window.myWidgetParam : window.myWidgetParam = [];
+                        window.myWidgetParam.push({
+                            id: 11,
+                            cityid: {{ usersList[0].cityID }},
+                            appid: '66e64fc4eb7e73b64c9e5eeccfcaed4c',
+                            units: 'imperial',
+                            containerid: 'openweathermap-widget-11',
+                        });
+                        (function () {
+                            var script = document.createElement('script');
+                            script.async = true;
+                            script.charset = "utf-8";
+                            script.src = "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";
+                            var s = document.getElementsByTagName('script')[0];
+                            s.parentNode.insertBefore(script, s);
+                        })();</script>
+                        {% endfor %}
+                    </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- Right side -->
+    <div class="level-item has-text-centered">
+        <div class="level-right">
+            <div class="level-item">
+                <button class="button is-info">
+                    Next City
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+<br>
+<nav class="level">
+<div class="level-item has-text-centered">
+    <div class="columns">
+            <div class="column">
+    <div class="container">
+               <form method="POST" >
+                    <div class="field is-horizontal">
+                        <div class="control">
+                            <input class="input" name="city" type="text" placeholder="City Name">
+                        </div>
+                        <div class="control">
+                            <button class="button is-info">
+                                Add City
+                            </button>
+                        </div>
+                    </div>
+               </form>
+    </div>
+            </div>
+    </div>
+</div>
+</nav>
+
+<br>
+<nav class="level">
+<div class="container">
+        <div class="level-item has-text-centered">
+            <div class="columns">
+                <div class="box">
+                    <p>
+                        <span class="title">My Cities</span>
+                        <br>
+                        <br>
+                        {% for userLoc in usersList %}
+                            <div class="block">
+                            <span class="subtitle is-centered">{{ userLoc.cityname }} </span>
+                            </div>
+                        {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<footer class="footer">
+</footer>
+</body>
