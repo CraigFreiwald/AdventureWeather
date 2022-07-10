@@ -2,33 +2,21 @@
 #                             IMPORTS
 # -----------------------------------------------------------------------------------------#
 import requests
+from model import db
 from flask import Flask, render_template, request, session
-from flask_sqlalchemy import SQLAlchemy
+
 
 # -----------------------------------------------------------------------------------------#
 #                       APP and DB CONFIG
 # -----------------------------------------------------------------------------------------#
+
+
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///weatherlocs.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///UsersAndCities.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['DEBUG'] = True
-db = SQLAlchemy(app)
-
-
-# -----------------------------------------------------------------------------------------#
-#                     SET ORM MODEL ClASSES FOR DB
-# -----------------------------------------------------------------------------------------#
-class City(db.Model):
-    uid = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-
-
-class User(db.Model):
-    userID = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(15), nullable=False)
-    password = db.Column(db.String(25), nullable=False)
 
 
 # -----------------------------------------------------------------------------------------#
@@ -62,7 +50,7 @@ def index():
             db.session.add(new_city_obj)
             db.session.commit()
 
-    # create list from DB model data
+    # create list from DB model.py data
     cities = City.query.all()
 
     # set url for api call to obtain city ID numbers
