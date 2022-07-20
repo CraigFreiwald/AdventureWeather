@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <!-- created by Craig Freiwald using Bulma css framework -->
 <!-- the stylesheet documentation can be accessed here https://bulma.io/documentation -->
+{% with messages = get_flashed_messages() %}
+   {% if messages %}
+      {% for message in messages %}
+         {{ message }}
+      {% endfor %}
+   {% endif %}
+{% endwith %}
 
+<form action="/weather" method="POST">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Adventure Weather</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"/>
+
 </head>
 <body>
 <section class="hero is-info">
@@ -124,3 +133,4 @@
 <footer class="footer">
 </footer>
 </body>
+</form>

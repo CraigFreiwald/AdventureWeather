@@ -1,9 +1,15 @@
 <link rel="stylesheet" href="/static/style.css" type="text/css">
 
+{% with messages = get_flashed_messages() %}
+   {% if messages %}
+      {% for message in messages %}
+         {{ message }}
+      {% endfor %}
+   {% endif %}
+{% endwith %}
 
 
-
-<form action="/weather" method="POST">
+<form action="/login" method="POST">
 <div class="login">
 <div class="login-screen">
 <div class="Adventure Weather">
