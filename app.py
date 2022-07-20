@@ -60,49 +60,56 @@ def index():
 
     if request.method == 'POST':
         new_city = request.form.get('city')
+        # create list from DB model data
         cities = City.query.all()
         if new_city:
             for city in cities:
                 if city.name == new_city:
                     print('City name already exists within user list')
-                    flash('City name already exists within user list')
-                    return render_template('weather.html', usersList=createList())
-                elif searchAPI_DB(new_city):
-                    print('invalid city name entered')
-                    flash('Invalid city name entered, please check spelling and try again')
-                    return render_template('weather.html', usersList=createList())
-                else:
-                    new_city_obj = City(name=new_city)
-                    db.session.add(new_city_obj)
-                    db.session.commit()
 
-    return render_template('weather.html', usersList=createList())
+                    flash('City name already exists within user list')
+                    return render_template('weather.html')
+                if not searchAPI_DB(new_city):
+                    print('invalid city name entered')
+
+                    flash('Invalid city name entered, please check spelling and try again')
+                    return render_template('weather.html')
+
+            new_city_obj = City(name=new_city)
+            db.session.add(new_city_obj)
+            db.session.commit()
+            cities = City.query.all()
+
+            return render_template('weather.html')
+
+    return render_template('weather.html')
 
 
 # bad city error check
-def searchAPI_DB(city):
-
+def searchAPI_DB(name):
     try:
-        requests.get(url.format(city)).json()
+        if requests.get(url.format(name)).json():
+            return True
     except KeyError:
         print('invalid city name entered')
+        return False
 
 
 # method to create list of Cities using API call and from DB info
-def createList():
-    # create list from DB model data
-    cities = City.query.all()
+def createList(cities):
 
     # create list to pass objects to template api
     usersList = []
 
     for city in cities:
-        r = requests.get(url.format(city.name)).json()
+        if searchAPI_DB(city):
+            r = requests.get(url.format(city.name)).json()
 
-        userLoc = {
-            'cityname': city.name,
-            'cityID': r['id']
-        }
+            userLoc = {
+                'cityname': city.name,
+                'cityID': r['id']
+            }
+            usersList.append(userLoc)
 
     return usersList
 
